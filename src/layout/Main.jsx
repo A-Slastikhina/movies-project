@@ -16,7 +16,7 @@ class Main extends Component {
    this.setState({loading:false})
    let options ={
       method:'get',
-      url:`http://www.omdbapi.com/?s=${str}&apikey=${API_KEY}${type !== 'all'? `&type=${type}`: ''}`,
+      url:`https://www.omdbapi.com/?s=${str}&apikey=${API_KEY}${type !== 'all'? `&type=${type}`: ''}`,
 
     }
     const self = this;
@@ -26,6 +26,7 @@ class Main extends Component {
        
       })
       .catch(function(err){
+         self.setState({loading:false})
         alert(err)
       })
  }
@@ -33,7 +34,7 @@ class Main extends Component {
     
       const options ={
          method:'get',
-         url:'http://www.omdbapi.com/',
+         url:'https://www.omdbapi.com/',
          params:{
             apikey: API_KEY,
             s:'matrix',
@@ -46,7 +47,9 @@ class Main extends Component {
           // console.log(self.state.movies)
          })
          .catch(function(err){
-           alert(err)
+            self.setState({loading:false});
+           alert(err);
+          
          })
  
    }
