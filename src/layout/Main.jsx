@@ -50,7 +50,7 @@ const SearchMovie = (str, type = '')=>{
           
          })
 
-   },[loading]
+   },[]
 
    )
 
