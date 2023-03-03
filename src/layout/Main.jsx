@@ -1,37 +1,35 @@
-import React,{Component} from "react";
+import React,{useState, useEffect} from "react";
 import axios from "axios";
 import { Movies } from "../components/Movies";
 import { Preloader } from "../components/Preloader";
 import { Search } from "../components/Search";
 const API_KEY = process.env.REACT_APP_API_KEY
-class Main extends Component {
-   constructor (){
-   super();
-   this.state={
-      movies:[],
-      loading:true
-   }   
-   }
- SearchMovie =(str, type = '')=>{
-   this.setState({loading:false})
+const Main  =()=> {
+   const [movies, setMovies] = useState([]);
+   const [loading, setLoading]= useState(true)
+
+const SearchMovie = (str, type = '')=>{
    let options ={
       method:'get',
       url:`https://www.omdbapi.com/?s=${str}&apikey=${API_KEY}${type !== 'all'? `&type=${type}`: ''}`,
 
     }
-    const self = this;
+   //  const self = this;
     axios.request(options)
       .then (function(response){
-        self.setState({movies: response.data.Search});
+         setMovies(response.data.Search);
+         setLoading(false)
+        //setState({movies: response.data.Search, loading:false});
        
       })
       .catch(function(err){
-         self.setState({loading:false})
+         setLoading(false)
         alert(err)
       })
  }
-   componentDidMount(){
-    
+
+   useEffect(()=>{
+      console.log('did mount')
       const options ={
          method:'get',
          url:'https://www.omdbapi.com/',
@@ -40,23 +38,24 @@ class Main extends Component {
             s:'matrix',
          }
        }
-       const self = this;
+       
        axios.request(options)
          .then (function(response){
-           self.setState({movies: response.data.Search, loading:false});
-          // console.log(self.state.movies)
+            setMovies(response.data.Search);
+            setLoading(false)
          })
          .catch(function(err){
-            self.setState({loading:false});
+           setLoading(false)
            alert(err);
           
          })
- 
-   }
-   render(){
-      const {movies, loading} = this.state
+
+   },[loading]
+
+   )
+
       return <main className="main-content">
-         <Search SearchMovie={this.SearchMovie}/>
+         <Search SearchMovie={SearchMovie}/>
          {  
             loading ? (<Preloader/>):
             (<Movies movies={movies}/>
@@ -64,7 +63,7 @@ class Main extends Component {
          }
         
       </main>
-   }
+ 
 
 }
 

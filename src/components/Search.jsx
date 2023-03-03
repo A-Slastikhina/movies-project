@@ -1,33 +1,33 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class Search extends Component {
-  state = {
-    search: '',
-    type: 'all',
+ const Search = (props) => {
+  const {SearchMovie} = props;
+const [search, setSearch]= useState('');
+const [type,setType] = useState('all')
+
+ const handleSearch = (evt) => {
+    setSearch( evt.target.value );
   };
-  handleSearch = (evt) => {
-    this.setState({ search: evt.target.value });
-  };
-  handleSubmit = (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
-    this.props.SearchMovie(this.state.search, this.state.type);
+    SearchMovie(search, type);
   };
-  handleChange = (evt) => {
-    this.setState({ [evt.target.name]: evt.target.value });
+  const handleChange = (evt) => {
+    setType( evt.target.value );
   };
-  render() {
-    const { type } = this.state;
+ 
+    
     return (
       <form
         className="input-field col s12"
-        onSubmit={this.handleSubmit}
+        onSubmit={handleSubmit}
       >
         <input
           type="search"
-          value={this.state.search}
+          value={search}
           className="validate"
           placeholder="What do you search?"
-          onChange={this.handleSearch}
+          onChange={handleSearch}
         />
         <button
           className="btn search-btn blue darken-4"
@@ -42,7 +42,7 @@ class Search extends Component {
               name="type"
               type="radio"
               value="all"
-              onChange={this.handleChange}
+              onChange={handleChange}
               checked={type === 'all'}
             />
             <span>All</span>
@@ -52,7 +52,7 @@ class Search extends Component {
               name="type"
               type="radio"
               value="movie"
-              onChange={this.handleChange}
+              onChange={handleChange}
               checked={type === 'movie'}
             />
             <span>Movies</span>
@@ -62,7 +62,7 @@ class Search extends Component {
               name="type"
               type="radio"
               value="series"
-              onChange={this.handleChange}
+              onChange={handleChange}
               checked={type === 'series'}
             />
             <span>Series</span>
@@ -71,6 +71,6 @@ class Search extends Component {
       </form>
     );
   }
-}
+
 
 export { Search };
